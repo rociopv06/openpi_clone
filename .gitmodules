@@ -4,3 +4,6 @@
 [submodule "third_party/libero"]
 	path = third_party/libero
 	url = https://github.com/Lifelong-Robot-Learning/LIBERO.git
+[submodule "openpi/interpretability/dictionary_learning"]
+	path = openpi/interpretability/dictionary_learning
+	url = https://github.com/saprmarks/dictionary_learning
