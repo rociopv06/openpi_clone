@@ -1,0 +1,52 @@
+---------------------------------------
+Begin Slurm Prolog: Feb-20-2026 14:47:05
+Job ID:    4078792
+User ID:   rvaldes6
+Account:   gts-agarg35-ideasci23_dgx
+Job name:  sae_pi05_libero
+Partition: gpu-h100
+QOS:       inferno
+---------------------------------------
+============================================================
+SAE Training Job on PACE ICE
+============================================================
+Job ID: 4078792
+Node: atl1-1-03-010-1-0.pace.gatech.edu
+Date: Fri Feb 20 02:47:05 PM EST 2026
+============================================================
+Storage locations:
+  OpenPI repo: /storage/project/r-agarg35-0/rvaldes6/openpi_clone
+  Checkpoint cache: /storage/project/r-agarg35-0/rvaldes6/openpi_cache
+  SAE outputs: /storage/project/r-agarg35-0/rvaldes6/sae_checkpoints
+============================================================
+GPU Information:
+name, memory.total [MiB], memory.free [MiB]
+NVIDIA H100 80GB HBM3, 81559 MiB, 81080 MiB
+============================================================
+Single job: Using hook point expert_layer_18
+Configuration:
+  Model config: pi05_libero
+  Hook point: expert_layer_18
+  Experiment name: pi05_libero_expert_layer_18_k32_exp4
+  Checkpoints will auto-download to: /storage/project/r-agarg35-0/rvaldes6/openpi_cache
+============================================================
+Running command:
+/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/bin/python -m openpi.interpretability.train_sae     --config pi05_libero     --hook_point expert_layer_18     --expansion_factor 4     --k 32     --lr 1e-4     --steps 50000     --batch_size 4096     --data_batch_size 16     --n_ctxs 20000     --save_dir /storage/project/r-agarg35-0/rvaldes6/sae_checkpoints     --exp_name pi05_libero_expert_layer_18_k32_exp4 --use_wandb --wandb_project pi05-sae-libero-pace
+============================================================
+============================================================
+Training completed with exit code: 1
+Date: Fri Feb 20 02:49:13 PM EST 2026
+SAE checkpoint saved to: /storage/project/r-agarg35-0/rvaldes6/sae_checkpoints/pi05_libero_expert_layer_18_k32_exp4
+============================================================
+---------------------------------------
+Begin Slurm Epilog: Feb-20-2026 14:49:13
+Job ID:        4078792
+User ID:       rvaldes6
+Account:       gts-agarg35-ideasci23_dgx
+Job name:      sae_pi05_libero
+Resources:     cpu=8,gres/gpu:h100=1,mem=80G,node=1
+Rsrc Used:     cput=00:17:20,vmem=0,walltime=00:02:10,mem=15776004K,energy_used=0
+Partition:     gpu-h100
+QOS:           inferno
+Nodes:         atl1-1-03-010-1-0
+---------------------------------------

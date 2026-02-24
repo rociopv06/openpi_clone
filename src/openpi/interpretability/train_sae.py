@@ -74,8 +74,8 @@ def parse_args():
     parser.add_argument(
         "--checkpoint_path",
         type=str,
-        default=None,
-        help="Path to model checkpoint. If None, uses config default.",
+        required=True,
+        help="Path to converted PyTorch model checkpoint (model.safetensors). Required — never uses random init.",
     )
     parser.add_argument(
         "--data_subset",
@@ -223,11 +223,10 @@ def load_pi0_model(config: _config.TrainConfig, checkpoint_path: str | None, dev
 
     model = pi0_pytorch.PI0Pytorch(config=config.model)
 
-    if checkpoint_path:
-        logger.info(f"Loading checkpoint from: {checkpoint_path}")
-        safetensors.torch.load_model(model, checkpoint_path)
-    else:
-        logger.warning("No checkpoint provided - using randomly initialized model!")
+    if not Path(checkpoint_path).exists():
+        raise FileNotFoundError(f"Checkpoint not found: {checkpoint_path}")
+    logger.info(f"Loading checkpoint from: {checkpoint_path}")
+    safetensors.torch.load_model(model, checkpoint_path)
 
     model = model.to(device)
     model.eval()
@@ -238,25 +237,20 @@ def load_pi0_model(config: _config.TrainConfig, checkpoint_path: str | None, dev
     return model
 
 
-def create_data_loader(config: _config.TrainConfig, batch_size: int, subset: str | None = None):
-    """Create data loader for activation collection."""
-    # Get data config
-    data_config = config.data
-
-    # Optionally filter to subset
-    if subset:
-        logger.info(f"Filtering data to subset: {subset}")
-        # This would need to be implemented based on your data structure
-
-    # Create the data loader using openpi's data loading utilities
-    train_loader = _data.create_data_loader(
-        data_config,
-        batch_size=batch_size,
-        shuffle=True,
-        num_workers=4,
-    )
-
-    return train_loader
+def create_data_loader(config: _config.TrainConfig, subset: str | None = None):         
+      """Create data loader for activation collection."""                                 
+      # Optionally filter to subset                                                       
+      if subset:                                                                          
+          logger.info(f"Filtering data to subset: {subset}")                              
+                                                                                          
+      # Create the data loader using openpi's data loading utilities                      
+      train_loader = _data.create_data_loader(                                            
+          config,                                                                         
+          shuffle=True,                                                                   
+          framework="pytorch",                                                            
+      )                                                                                   
+                                                                                          
+      return train_loader
 
 
 def main():
@@ -297,7 +291,6 @@ def main():
     logger.info("Creating data loader...")
     data_loader = create_data_loader(
         train_config,
-        batch_size=args.data_batch_size,
         subset=args.data_subset
     )
 
@@ -322,15 +315,18 @@ def main():
     logger.info(f"Dictionary size: {dict_size} ({args.expansion_factor}x expansion)")
 
     # Create SAE trainer config
-    trainer_config = {
-        "trainer": BatchTopKTrainer,
-        "activation_dim": d_model,
-        "dict_size": dict_size,
-        "k": args.k,
-        "lr": args.lr,
-        "device": args.device,
-        "wandb_name": f"{args.exp_name}_{args.hook_point}",
-    }
+    trainer_config = {                                                                                                                                                                                             
+         "trainer": BatchTopKTrainer,                                                                                                                                                                               
+         "activation_dim": d_model,                                                                                                                                                                                 
+         "dict_size": dict_size,                                                                                                                                                                                    
+         "k": args.k,                                                                                                                                                                                               
+         "lr": args.lr,                                                                                                                                                                                             
+         "device": args.device,                                                                                                                                                                                     
+         "wandb_name": f"{args.exp_name}_{args.hook_point}",                                                                                                                                                        
+         "steps": args.steps,                                                                                                                                                                                       
+         "layer": args.hook_point,                                                                                                                                                                                  
+         "lm_name": args.config,                                                                                                                                                                                    
+     }
 
     run_cfg = {
         "hook_point": args.hook_point,

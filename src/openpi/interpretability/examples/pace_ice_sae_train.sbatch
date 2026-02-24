@@ -1,14 +1,14 @@
 #!/bin/bash
-#SBATCH -J sae_pi0_aloha                 # Job name
+#SBATCH -J sae_pi0_liber                 # Job name
 #SBATCH -N1 --ntasks-per-node=8          # 1 node, 8 CPU cores
 #SBATCH --gres=gpu:H100:1                # Request 1 H100 GPU (or use A100:1, V100:1)
 #SBATCH --mem-per-gpu=80G                # Memory per GPU (H100 has 80GB)
-#SBATCH -t 16:00:00                      # Max 16 hours for GPU jobs on ICE
+#SBATCH -t 3:00:00                       # Set 3 hours for GPU 
 #SBATCH -o sae_train_%j.out              # Output file
 #SBATCH -e sae_train_%j.err              # Error file
 #SBATCH --mail-type=BEGIN,END,FAIL       # Email notifications
-#SBATCH --mail-user=YOUR_EMAIL@gatech.edu  # <-- CHANGE THIS
-
+#SBATCH --mail-user=rvaldes6@gatech.edu  # Mail
+#SBATCH --account=gts-agarg35		 # Account
 ###############################################################################
 # SAE Training on PACE ICE Cluster (Georgia Tech)
 #
@@ -136,39 +136,3 @@ cd "$OPENPI_DIR"
 # Build the command
 CMD="python -m openpi.interpretability.train_sae \
     --config $CONFIG \
-    --checkpoint_path $CHECKPOINT_PATH \
-    --hook_point $HOOK_POINT \
-    --expansion_factor $EXPANSION_FACTOR \
-    --k $K \
-    --lr $LR \
-    --steps $STEPS \
-    --batch_size $BATCH_SIZE \
-    --data_batch_size $DATA_BATCH_SIZE \
-    --n_ctxs $N_CTXS \
-    --exp_name $EXP_NAME \
-    --save_dir $SAVE_DIR \
-    --device cuda"
-
-# Add wandb if enabled
-if [ -n "$USE_WANDB" ]; then
-    CMD="$CMD $USE_WANDB --wandb_project $WANDB_PROJECT"
-    if [ -n "$WANDB_ENTITY" ]; then
-        CMD="$CMD --wandb_entity $WANDB_ENTITY"
-    fi
-fi
-
-echo "Running command:"
-echo "$CMD"
-echo "============================================================"
-
-# Run with srun for proper Slurm integration
-srun $CMD
-
-# ============================================================================
-# COMPLETION
-# ============================================================================
-
-echo "============================================================"
-echo "Job completed at: $(date)"
-echo "Checkpoints saved to: $SAVE_DIR/$EXP_NAME"
-echo "============================================================"

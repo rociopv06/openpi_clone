@@ -1,0 +1,11 @@
+
+CondaError: Run 'conda init' before 'conda deactivate'
+
+
+EnvironmentNameNotFound: Could not find conda environment: openpi
+You can list all discoverable environments with `conda info --envs`.
+
+
+/var/lib/slurm/slurmd/job3442989/slurm_script: line 134: cd: /storage/home/hcoda1/3/rvaldes6/openpi_clone: No such file or directory
+/var/lib/slurm/slurmd/job3442989/slurm_script: line 137: unexpected EOF while looking for matching `"'
+/var/lib/slurm/slurmd/job3442989/slurm_script: line 139: syntax error: unexpected end of file

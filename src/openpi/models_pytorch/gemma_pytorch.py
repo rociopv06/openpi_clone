@@ -21,6 +21,11 @@ class PaliGemmaWithExpertModel(nn.Module):
             use_adarms = [False, False]
         super().__init__()
 
+        # Activation caching for interpretability hooks
+        self._cached_activations = {}
+        self._cache_expert_layers = set()  # Which expert layers to cache
+        self._cache_lang_layers = set()    # Which language layers to cache
+
         vlm_config_hf = CONFIG_MAPPING["paligemma"]()
         vlm_config_hf._vocab_size = 257152  # noqa: SLF001
         vlm_config_hf.image_token_index = 257152
@@ -81,6 +86,31 @@ class PaliGemmaWithExpertModel(nn.Module):
         for name, param in self.named_parameters():
             if any(selector in name for selector in params_to_keep_float32):
                 param.data = param.data.to(dtype=torch.float32)
+
+    def enable_activation_cache(self, expert_layers=None, lang_layers=None):
+        """Enable activation caching for specified layers.
+
+        Args:
+            expert_layers: List of layer indices to cache from action expert
+            lang_layers: List of layer indices to cache from language model
+        """
+        self._cache_expert_layers = set(expert_layers or [])
+        self._cache_lang_layers = set(lang_layers or [])
+        self._cached_activations = {}
+
+    def disable_activation_cache(self):
+        """Disable activation caching."""
+        self._cache_expert_layers = set()
+        self._cache_lang_layers = set()
+        self._cached_activations = {}
+
+    def get_cached_activations(self):
+        """Return cached activations from last forward pass."""
+        return self._cached_activations.copy()
+
+    def clear_cached_activations(self):
+        """Clear cached activations."""
+        self._cached_activations = {}
 
     def embed_image(self, image: torch.Tensor):
         return self.paligemma.model.get_image_features(image)
@@ -234,6 +264,12 @@ class PaliGemmaWithExpertModel(nn.Module):
                     out_emb = modeling_gemma._gated_residual(after_first_residual, out_emb, gate)  # noqa: SLF001
                     outputs_embeds.append(out_emb)
                     start_pos = end_pos
+
+                    # Cache activations for interpretability if requested
+                    if i == 0 and layer_idx in self._cache_lang_layers:
+                        self._cached_activations[f"lang_layer_{layer_idx}"] = out_emb.detach().clone()
+                    elif i == 1 and layer_idx in self._cache_expert_layers:
+                        self._cached_activations[f"expert_layer_{layer_idx}"] = out_emb.detach().clone()
 
                 return outputs_embeds
 

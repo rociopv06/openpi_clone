@@ -1,0 +1,68 @@
+---------------------------------------
+Begin Slurm Prolog: Feb-23-2026 16:17:48
+Job ID:    4156165
+User ID:   rvaldes6
+Account:   gts-agarg35-ideasci23_dgx
+Job name:  sae_interpret
+Partition: gpu-h100
+QOS:       inferno
+---------------------------------------
+============================================================
+SAE Interpretation Job on PACE ICE
+============================================================
+Job ID: 4156165
+Node: atl1-1-03-010-1-0.pace.gatech.edu
+Date: Mon Feb 23 04:17:48 PM EST 2026
+============================================================
+Storage locations:
+  OpenPI repo: /storage/project/r-agarg35-0/rvaldes6/openpi_clone
+  Checkpoint cache: /storage/project/r-agarg35-0/rvaldes6/openpi_cache
+============================================================
+GPU Information:
+name, memory.total [MiB], memory.free [MiB]
+NVIDIA H100 80GB HBM3, 81559 MiB, 81080 MiB
+============================================================
+Configuration:
+  Model config: pi05_libero
+  Hook point: lang_layer_9
+  Experiment name: pi05_libero_lang_layer_9_k32_exp4
+  SAE checkpoint: /storage/project/r-agarg35-0/rvaldes6/sae_checkpoints/pi05_libero_lang_layer_9_k32_exp4/trainer_0/ae.pt
+  Output dir: /storage/project/r-agarg35-0/rvaldes6/sae_interpretations/pi05_libero_lang_layer_9_k32_exp4
+  N batches: 200
+  Top-K: 20
+============================================================
+Running command:
+/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/bin/python -m openpi.interpretability.interpret_sae     --config pi05_libero     --checkpoint_path /storage/project/r-agarg35-0/rvaldes6/pi05_pytorch/model.safetensors     --hook_point lang_layer_9     --sae_checkpoint /storage/project/r-agarg35-0/rvaldes6/sae_checkpoints/pi05_libero_lang_layer_9_k32_exp4/trainer_0/ae.pt     --output_dir /storage/project/r-agarg35-0/rvaldes6/sae_interpretations/pi05_libero_lang_layer_9_k32_exp4     --n_batches 200     --data_batch_size 16     --top_k 20     --eval_batches 50
+============================================================
+============================================================
+Interpretation completed with exit code: 0
+Date: Mon Feb 23 05:18:29 PM EST 2026
+Results saved to: /storage/project/r-agarg35-0/rvaldes6/sae_interpretations/pi05_libero_lang_layer_9_k32_exp4
+
+Output files:
+total 1.4G
+-rw-r--r--. 1 rvaldes6 pace-agarg35 370K Feb 23 16:21 decoder_analysis.json
+-rw-r--r--. 1 rvaldes6 pace-agarg35 257M Feb 23 16:21 decoder_cosine_sim.pt
+-rw-r--r--. 1 rvaldes6 pace-agarg35  65M Feb 23 16:21 decoder_weights.pt
+-rw-r--r--. 1 rvaldes6 pace-agarg35 1.1M Feb 23 17:18 feature_action_correlation.pt
+-rw-r--r--. 1 rvaldes6 pace-agarg35  29K Feb 23 17:18 feature_action_correlations.json
+-rw-r--r--. 1 rvaldes6 pace-agarg35  34K Feb 23 16:20 feature_fire_counts.pt
+-rw-r--r--. 1 rvaldes6 pace-agarg35 460K Feb 23 16:21 feature_statistics.json
+-rw-r--r--. 1 rvaldes6 pace-agarg35  291 Feb 23 16:20 health_metrics.json
+-rw-r--r--. 1 rvaldes6 pace-agarg35  517 Feb 23 16:18 interpret_args.json
+-rw-r--r--. 1 rvaldes6 pace-agarg35 1.1G Feb 23 17:11 top_activating_examples.json
+-rw-r--r--. 1 rvaldes6 pace-agarg35 1.3M Feb 23 17:10 top_activation_indices.pt
+-rw-r--r--. 1 rvaldes6 pace-agarg35 642K Feb 23 17:10 top_activation_values.pt
+============================================================
+---------------------------------------
+Begin Slurm Epilog: Feb-23-2026 17:18:30
+Job ID:        4156165
+User ID:       rvaldes6
+Account:       gts-agarg35-ideasci23_dgx
+Job name:      sae_interpret
+Resources:     cpu=8,gres/gpu:h100=1,mem=80G,node=1
+Rsrc Used:     cput=08:05:52,vmem=0,walltime=01:00:44,mem=36861096K,energy_used=0
+Partition:     gpu-h100
+QOS:           inferno
+Nodes:         atl1-1-03-010-1-0
+---------------------------------------

@@ -1,0 +1,14 @@
+/storage/project/r-agarg35-0/rvaldes6/conda_envs/py311_openpi/lib/python3.11/site-packages/jaxlib/plugin_support.py:71: RuntimeWarning: JAX plugin jax_cuda12_plugin version 0.5.3 is installed, but it is not compatible with the installed jaxlib version 0.9.0, so it will not be used.
+  warnings.warn(
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/src/openpi/interpretability/interpret_sae.py", line 46, in <module>
+    import openpi.training.config as _config
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/src/openpi/training/config.py", line 19, in <module>
+    import openpi.models.tokenizer as _tokenizer
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/src/openpi/models/tokenizer.py", line 11, in <module>
+    import openpi.shared.download as download
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/src/openpi/shared/download.py", line 15, in <module>
+    import tqdm_loggable.auto as tqdm
+ModuleNotFoundError: No module named 'tqdm_loggable'

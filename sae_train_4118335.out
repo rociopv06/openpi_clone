@@ -1,0 +1,47 @@
+---------------------------------------
+Begin Slurm Prolog: Feb-23-2026 00:09:47
+Job ID:    4118335
+User ID:   rvaldes6
+Account:   gts-agarg35-ideasci23_dgx
+Job name:  sae_pi05_libero
+Partition: gpu-h100
+QOS:       inferno
+---------------------------------------
+============================================================
+SAE Training Job on PACE ICE
+============================================================
+Job ID: 4118335
+Node: atl1-1-03-010-1-0.pace.gatech.edu
+Date: Mon Feb 23 12:09:47 AM EST 2026
+============================================================
+Storage locations:
+  OpenPI repo: /storage/project/r-agarg35-0/rvaldes6/openpi_clone
+  Checkpoint cache: /storage/project/r-agarg35-0/rvaldes6/openpi_cache
+  SAE outputs: /storage/project/r-agarg35-0/rvaldes6/sae_checkpoints
+============================================================
+GPU Information:
+name, memory.total [MiB], memory.free [MiB]
+NVIDIA H100 80GB HBM3, 81559 MiB, 81080 MiB
+============================================================
+Single job: Using hook point expert_layer_14
+Configuration:
+  Model config: pi05_libero
+  Hook point: expert_layer_14
+  Experiment name: pi05_libero_expert_layer_14_k32_exp4
+  Checkpoints will auto-download to: /storage/project/r-agarg35-0/rvaldes6/openpi_cache
+============================================================
+Running command:
+/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/bin/python -m openpi.interpretability.train_sae     --config pi05_libero     --hook_point expert_layer_14     --expansion_factor 4     --k 32     --lr 1e-4     --steps 50000     --batch_size 4096     --data_batch_size 16     --n_ctxs 20000     --save_dir /storage/project/r-agarg35-0/rvaldes6/sae_checkpoints     --exp_name pi05_libero_expert_layer_14_k32_exp4 --use_wandb --wandb_project pi05-sae-libero-pace
+============================================================
+---------------------------------------
+Begin Slurm Epilog: Feb-23-2026 07:40:06
+Job ID:        4118335
+User ID:       rvaldes6
+Account:       gts-agarg35-ideasci23_dgx
+Job name:      sae_pi05_libero
+Resources:     cpu=8,gres/gpu:h100=1,mem=80G,node=1
+Rsrc Used:     cput=2-12:02:24,vmem=0,walltime=07:30:18,mem=15775920K,energy_used=0
+Partition:     gpu-h100
+QOS:           inferno
+Nodes:         atl1-1-03-010-1-0
+---------------------------------------
