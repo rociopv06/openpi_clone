@@ -255,9 +255,16 @@ def find_top_activating_examples(
         with torch.no_grad():
             _ = model(observation, actions)
 
-        acts = collector.get_activations(flatten=True)[hook_point]
+        # Get unflattened activations first to determine seq_len for correct sample mapping
+        raw_acts = collector.get_activations(flatten=False)[hook_point]  # [B, seq_len, D]
+        seq_len = raw_acts.shape[1] if raw_acts.ndim >= 3 else 1
+        acts = raw_acts.reshape(-1, raw_acts.shape[-1])  # [B*seq_len, D]
         acts = acts.to(device, dtype=torch.float32)
         collector.clear_activations()
+
+        n_image_tokens = batch_metadata.get("n_image_tokens", 0)
+        text_len_val = batch_metadata.get("text_len", 0)
+        is_lang_hook = hook_point.startswith("lang_layer_")
 
         # Encode through SAE
         features = sae.encode(acts.to(device))  # [n_tokens, dict_size]
@@ -279,10 +286,26 @@ def find_top_activating_examples(
                     top_vals[fi, pos] = feat_vals[fi]
                     top_indices[fi, pos] = global_idx
 
+            # Correct sample mapping: token_idx // seq_len gives the sample index within the batch
+            sample_idx = token_idx // seq_len
+            token_pos = token_idx % seq_len
+
+            if is_lang_hook:
+                if token_pos < n_image_tokens:
+                    token_type = "image"
+                elif token_pos < n_image_tokens + text_len_val:
+                    token_type = "text"
+                else:
+                    token_type = "padding"
+            else:
+                token_type = "action_state"
+
             sample_metadata[global_idx] = {
                 "batch_idx": batch_idx,
                 "token_idx": token_idx,
-                **batch_metadata.get(token_idx % batch_metadata.get("batch_size", 1), {}),
+                "token_pos": token_pos,
+                "token_type": token_type,
+                **batch_metadata.get(sample_idx, {}),
             }
             global_idx += 1
 
@@ -312,7 +335,15 @@ def _extract_batch_metadata(observation, actions):
 
     # Try to extract task/prompt info
     if hasattr(observation, "tokenized_prompt") and observation.tokenized_prompt is not None:
-        batch_size = observation.tokenized_prompt.shape[0] if hasattr(observation.tokenized_prompt, "shape") else 1
+        tp = observation.tokenized_prompt
+        batch_size = tp.shape[0] if hasattr(tp, "shape") else 1
+        # Store per-batch text length for token type classification
+        metadata["text_len"] = tp.shape[1] if hasattr(tp, "shape") and tp.ndim >= 2 else 0
+
+    # Number of image tokens: SigLIP produces 256 tokens per image per camera
+    if hasattr(observation, "images") and observation.images is not None:
+        n_cameras = len(observation.images) if hasattr(observation.images, "__len__") else 1
+        metadata["n_image_tokens"] = 256 * n_cameras
 
     # Extract proprioceptive state
     if hasattr(observation, "state") and observation.state is not None:
@@ -330,13 +361,9 @@ def _extract_batch_metadata(observation, actions):
                     metadata[i] = {}
                 metadata[i]["proprio_state"] = state[i].tolist() if state.ndim > 1 else state.tolist()
 
-    # Extract action info
-    if isinstance(actions, torch.Tensor):
-        actions_np = actions.detach().cpu().numpy()
-        for i in range(min(actions_np.shape[0], batch_size) if actions_np.ndim > 1 else 1):
-            if i not in metadata:
-                metadata[i] = {}
-            metadata[i]["actions"] = actions_np[i].tolist() if actions_np.ndim > 1 else actions_np.tolist()
+    # NOTE: actions are intentionally NOT stored per-token to avoid RAM exhaustion.
+    # With n_batches=1000 x batch_size=16 x seq_len=800 = 12.8M tokens, storing
+    # actions (50x7 floats each) per token would consume ~18GB of CPU RAM.
 
     metadata["batch_size"] = batch_size
     return metadata
@@ -763,8 +790,8 @@ def main():
                 meta = top_examples["sample_metadata"][idx]
                 if "proprio_state" in meta:
                     entry["proprio_state"] = meta["proprio_state"]
-                if "actions" in meta:
-                    entry["actions"] = meta["actions"]
+                entry["token_pos"] = meta.get("token_pos", -1)
+                entry["token_type"] = meta.get("token_type", "unknown")
                 entry["batch_idx"] = meta.get("batch_idx", -1)
                 feat_top.append(entry)
         meta_summary[f"feature_{feat_idx}"] = feat_top

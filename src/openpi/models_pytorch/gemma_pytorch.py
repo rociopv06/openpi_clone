@@ -87,16 +87,19 @@ class PaliGemmaWithExpertModel(nn.Module):
             if any(selector in name for selector in params_to_keep_float32):
                 param.data = param.data.to(dtype=torch.float32)
 
-    def enable_activation_cache(self, expert_layers=None, lang_layers=None):
+    def enable_activation_cache(self, expert_layers=None, lang_layers=None, attribution_mode=False):
         """Enable activation caching for specified layers.
 
         Args:
             expert_layers: List of layer indices to cache from action expert
             lang_layers: List of layer indices to cache from language model
+            attribution_mode: If True, store activations WITHOUT detach so gradients
+                can flow back through them (used for gradient-based feature attribution).
         """
         self._cache_expert_layers = set(expert_layers or [])
         self._cache_lang_layers = set(lang_layers or [])
         self._cached_activations = {}
+        self._attribution_mode = attribution_mode
 
     def disable_activation_cache(self):
         """Disable activation caching."""
@@ -267,9 +270,16 @@ class PaliGemmaWithExpertModel(nn.Module):
 
                     # Cache activations for interpretability if requested
                     if i == 0 and layer_idx in self._cache_lang_layers:
-                        self._cached_activations[f"lang_layer_{layer_idx}"] = out_emb.detach().clone()
+                        if getattr(self, '_attribution_mode', False):
+                            # Attribution mode: keep tensor in graph for gradient computation
+                            self._cached_activations[f"lang_layer_{layer_idx}"] = out_emb
+                        else:
+                            self._cached_activations[f"lang_layer_{layer_idx}"] = out_emb.detach().clone()
                     elif i == 1 and layer_idx in self._cache_expert_layers:
-                        self._cached_activations[f"expert_layer_{layer_idx}"] = out_emb.detach().clone()
+                        if getattr(self, '_attribution_mode', False):
+                            self._cached_activations[f"expert_layer_{layer_idx}"] = out_emb
+                        else:
+                            self._cached_activations[f"expert_layer_{layer_idx}"] = out_emb.detach().clone()
 
                 return outputs_embeds
 
