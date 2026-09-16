@@ -1,0 +1,14 @@
+# Deny-by-default: ignore everything, then explicitly allow only
+# the real project code/docs. This is intentional given this directory
+# also holds caches, conda envs, model checkpoints, and .ssh — none of
+# which should ever enter git history.
+/*
+
+# Allowed: project code and docs
+!/scripts/
+!/feature_attribution/
+!/PROGRESS_fable_causal_features.md
+!/PROMPT_fable_causal_features.md
+!/MEMORY.md
+!/.gitignore
+!/README.md
