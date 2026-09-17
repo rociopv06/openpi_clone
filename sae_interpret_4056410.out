@@ -1,0 +1,57 @@
+---------------------------------------
+Begin Slurm Prolog: Feb-19-2026 12:03:22
+Job ID:    4056410
+User ID:   rvaldes6
+Account:   gts-agarg35-ideasci23_dgx
+Job name:  sae_interpret
+Partition: gpu-h100
+QOS:       inferno
+---------------------------------------
+============================================================
+SAE Interpretation Job on PACE ICE
+============================================================
+Job ID: 4056410
+Node: atl1-1-03-010-1-0.pace.gatech.edu
+Date: Thu Feb 19 12:03:22 PM EST 2026
+============================================================
+Storage locations:
+  OpenPI repo: /storage/project/r-agarg35-0/rvaldes6/openpi_clone
+  Checkpoint cache: /storage/project/r-agarg35-0/rvaldes6/openpi_cache
+============================================================
+GPU Information:
+name, memory.total [MiB], memory.free [MiB]
+NVIDIA H100 80GB HBM3, 81559 MiB, 81080 MiB
+============================================================
+Configuration:
+  Model config: pi05_libero
+  Hook point: expert_layer_0
+  Experiment name: pi05_libero_expert_layer_0_k32_exp4
+  SAE checkpoint: /storage/project/r-agarg35-0/rvaldes6/sae_checkpoints/pi05_libero_expert_layer_0_k32_exp4/trainer_0/ae.pt
+  Output dir: /storage/project/r-agarg35-0/rvaldes6/sae_interpretations/pi05_libero_expert_layer_0_k32_exp4
+  N batches: 200
+  Top-K: 20
+============================================================
+Running command:
+/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/bin/python -m openpi.interpretability.interpret_sae     --config pi05_libero     --hook_point expert_layer_0     --sae_checkpoint /storage/project/r-agarg35-0/rvaldes6/sae_checkpoints/pi05_libero_expert_layer_0_k32_exp4/trainer_0/ae.pt     --output_dir /storage/project/r-agarg35-0/rvaldes6/sae_interpretations/pi05_libero_expert_layer_0_k32_exp4     --n_batches 200     --data_batch_size 16     --top_k 20     --eval_batches 50
+============================================================
+============================================================
+Interpretation completed with exit code: 1
+Date: Thu Feb 19 12:04:45 PM EST 2026
+Results saved to: /storage/project/r-agarg35-0/rvaldes6/sae_interpretations/pi05_libero_expert_layer_0_k32_exp4
+
+Output files:
+total 512
+-rw-r--r--. 1 rvaldes6 pace-agarg35 457 Feb 19 12:03 interpret_args.json
+============================================================
+---------------------------------------
+Begin Slurm Epilog: Feb-19-2026 12:04:46
+Job ID:        4056410
+User ID:       rvaldes6
+Account:       gts-agarg35-ideasci23_dgx
+Job name:      sae_interpret
+Resources:     cpu=8,gres/gpu:h100=1,mem=80G,node=1
+Rsrc Used:     cput=00:11:20,vmem=0,walltime=00:01:25,mem=15736364K,energy_used=0
+Partition:     gpu-h100
+QOS:           inferno
+Nodes:         atl1-1-03-010-1-0
+---------------------------------------

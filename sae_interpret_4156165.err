@@ -1,0 +1,26 @@
+WARNING:root:
+The dataset you requested (physical-intelligence/libero) is in 2.0 format.
+While current version of LeRobot is backward-compatible with it, the version of your dataset still uses global
+stats instead of per-episode stats. Update your dataset stats to the new format using this command:
+```
+python lerobot/common/datasets/v21/convert_dataset_v20_to_v21.py --repo-id=physical-intelligence/libero
+```
+
+If you encounter a problem, contact LeRobot maintainers on [Discord](https://discord.com/invite/s3KuuzsPFb)
+or open an [issue on GitHub](https://github.com/huggingface/lerobot/issues/new/choose).
+
+WARNING:root:
+The dataset you requested (physical-intelligence/libero) is in 2.0 format.
+While current version of LeRobot is backward-compatible with it, the version of your dataset still uses global
+stats instead of per-episode stats. Update your dataset stats to the new format using this command:
+```
+python lerobot/common/datasets/v21/convert_dataset_v20_to_v21.py --repo-id=physical-intelligence/libero
+```
+
+If you encounter a problem, contact LeRobot maintainers on [Discord](https://discord.com/invite/s3KuuzsPFb)
+or open an [issue on GitHub](https://github.com/huggingface/lerobot/issues/new/choose).
+
+Collecting lang_layer_9 activations:   0%|          | 0/250000 [00:00<?, ?it/s]Collecting lang_layer_9 activations:  99%|█████████▉| 247808/250000 [00:19<00:00, 12972.70it/s]Collecting lang_layer_9 activations: 100%|██████████| 250000/250000 [00:22<00:00, 10409.09it/s]Collecting lang_layer_9 activations: 100%|██████████| 250000/250000 [00:22<00:00, 11058.84it/s]
+Collecting lang_layer_9 activations:  49%|████▉     | 123024/250000 [00:00<?, ?it/s]Collecting lang_layer_9 activations: 100%|██████████| 250000/250000 [00:03<00:00, 41691.76it/s]Collecting lang_layer_9 activations: 100%|██████████| 250000/250000 [00:03<00:00, 41688.17it/s]
+Collecting lang_layer_9 activations:   0%|          | 0/250000 [00:00<?, ?it/s]Collecting lang_layer_9 activations:  99%|█████████▉| 247808/250000 [00:19<00:00, 12800.89it/s]Collecting lang_layer_9 activations: 100%|██████████| 250000/250000 [00:22<00:00, 10299.14it/s]Collecting lang_layer_9 activations: 100%|██████████| 250000/250000 [00:22<00:00, 10934.50it/s]
+Collecting lang_layer_9 activations:  49%|████▉     | 123024/250000 [00:00<?, ?it/s]Collecting lang_layer_9 activations: 100%|██████████| 250000/250000 [00:02<00:00, 47639.56it/s]Collecting lang_layer_9 activations: 100%|██████████| 250000/250000 [00:02<00:00, 47635.05it/s]

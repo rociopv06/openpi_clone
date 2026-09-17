@@ -1,0 +1,99 @@
+WARNING:__main__:No checkpoint provided - using randomly initialized model!
+WARNING:root:
+The dataset you requested (physical-intelligence/libero) is in 2.0 format.
+While current version of LeRobot is backward-compatible with it, the version of your dataset still uses global
+stats instead of per-episode stats. Update your dataset stats to the new format using this command:
+```
+python lerobot/common/datasets/v21/convert_dataset_v20_to_v21.py --repo-id=physical-intelligence/libero
+```
+
+If you encounter a problem, contact LeRobot maintainers on [Discord](https://discord.com/invite/s3KuuzsPFb)
+or open an [issue on GitHub](https://github.com/huggingface/lerobot/issues/new/choose).
+
+WARNING:root:
+The dataset you requested (physical-intelligence/libero) is in 2.0 format.
+While current version of LeRobot is backward-compatible with it, the version of your dataset still uses global
+stats instead of per-episode stats. Update your dataset stats to the new format using this command:
+```
+python lerobot/common/datasets/v21/convert_dataset_v20_to_v21.py --repo-id=physical-intelligence/libero
+```
+
+If you encounter a problem, contact LeRobot maintainers on [Discord](https://discord.com/invite/s3KuuzsPFb)
+or open an [issue on GitHub](https://github.com/huggingface/lerobot/issues/new/choose).
+
+WARNING:root:Revision v2.1 for physical-intelligence/libero not found, using version v2.0
+Fetching 1699 files:   0%|          | 0/1699 [00:00<?, ?it/s]Fetching 1699 files:   7%|▋         | 120/1699 [00:00<00:01, 1196.55it/s]Fetching 1699 files:  14%|█▍        | 246/1699 [00:00<00:01, 1229.64it/s]Fetching 1699 files:  18%|█▊        | 306/1699 [00:02<00:13, 105.60it/s] 
+Traceback (most recent call last):
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/lib/python3.11/site-packages/lerobot/common/datasets/lerobot_dataset.py", line 498, in __init__
+    assert all((self.root / fpath).is_file() for fpath in self.get_episodes_file_paths())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/src/openpi/interpretability/interpret_sae.py", line 803, in <module>
+    main()
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/src/openpi/interpretability/interpret_sae.py", line 674, in main
+    data_loader = _data.create_data_loader(train_config, shuffle=True, framework="pytorch")
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/src/openpi/training/data_loader.py", line 256, in create_data_loader
+    return create_torch_data_loader(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/src/openpi/training/data_loader.py", line 302, in create_torch_data_loader
+    dataset = create_torch_dataset(data_config, action_horizon, model_config)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/src/openpi/training/data_loader.py", line 141, in create_torch_dataset
+    dataset = lerobot_dataset.LeRobotDataset(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/lib/python3.11/site-packages/lerobot/common/datasets/lerobot_dataset.py", line 502, in __init__
+    self.download_episodes(download_videos)
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/lib/python3.11/site-packages/lerobot/common/datasets/lerobot_dataset.py", line 601, in download_episodes
+    self.pull_from_repo(allow_patterns=files, ignore_patterns=ignore_patterns)
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/lib/python3.11/site-packages/lerobot/common/datasets/lerobot_dataset.py", line 579, in pull_from_repo
+    snapshot_download(
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/lib/python3.11/site-packages/huggingface_hub/_snapshot_download.py", line 327, in snapshot_download
+    thread_map(
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/lib/python3.11/site-packages/tqdm/contrib/concurrent.py", line 69, in thread_map
+    return _executor_map(ThreadPoolExecutor, fn, *iterables, **tqdm_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/lib/python3.11/site-packages/tqdm/contrib/concurrent.py", line 51, in _executor_map
+    return list(tqdm_class(ex.map(fn, *iterables, chunksize=chunksize), **kwargs))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/lib/python3.11/site-packages/tqdm/std.py", line 1181, in __iter__
+    for obj in iterable:
+  File "/storage/home/hcoda1/3/rvaldes6/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/concurrent/futures/_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/storage/home/hcoda1/3/rvaldes6/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/concurrent/futures/_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/storage/home/hcoda1/3/rvaldes6/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/storage/home/hcoda1/3/rvaldes6/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/storage/home/hcoda1/3/rvaldes6/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/lib/python3.11/site-packages/huggingface_hub/_snapshot_download.py", line 301, in _inner_hf_hub_download
+    return hf_hub_download(
+           ^^^^^^^^^^^^^^^^
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 988, in hf_hub_download
+    return _hf_hub_download_to_local_dir(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 1290, in _hf_hub_download_to_local_dir
+    _download_to_tmp_and_move(
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 1710, in _download_to_tmp_and_move
+    xet_get(
+  File "/storage/project/r-agarg35-0/rvaldes6/openpi_clone/.venv/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 627, in xet_get
+    download_files(
+RuntimeError: Data processing error: CAS service error : IO Error: Disk quota exceeded (os error 122)

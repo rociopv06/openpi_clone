@@ -1,0 +1,38 @@
+---------------------------------------
+Begin Slurm Prolog: Jan-26-2026 11:36:25
+Job ID:    3442989
+User ID:   rvaldes6
+Account:   gts-agarg35
+Job name:  sae_pi0_liber
+Partition: gpu-h100
+QOS:       inferno
+---------------------------------------
+============================================================
+SAE Training Job on PACE ICE
+============================================================
+Job ID: 3442989
+Node: atl1-1-01-006-19-0.pace.gatech.edu
+Date: Mon Jan 26 11:36:25 AM EST 2026
+============================================================
+GPU Information:
+name, memory.total [MiB], memory.free [MiB]
+NVIDIA H100 80GB HBM3, 81559 MiB, 81080 MiB
+============================================================
+Single job: Using first hook point
+Configuration: pi0_aloha_sim
+Hook Point: expert_layer_0
+Experiment: pi0_aloha_sim_expert_layer_0_k32_exp4
+Checkpoint: /storage/home/hcoda1/3/rvaldes6/checkpoints/pi0_aloha_sim/model.safetensors
+============================================================
+---------------------------------------
+Begin Slurm Epilog: Jan-26-2026 11:36:29
+Job ID:        3442989
+User ID:       rvaldes6
+Account:       gts-agarg35
+Job name:      sae_pi0_liber
+Resources:     cpu=8,gres/gpu:h100=1,mem=80G,node=1
+Rsrc Used:     cput=00:00:40,vmem=0,walltime=00:00:05,mem=38348K,energy_used=0
+Partition:     gpu-h100
+QOS:           inferno
+Nodes:         atl1-1-01-006-19-0
+---------------------------------------
